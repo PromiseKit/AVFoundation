@@ -2,20 +2,15 @@ os: osx
 language: objective-c
 matrix:
   include:
-    - osx_image: xcode8.2
-      env: SWFT=3.0
-    - osx_image: xcode8.3
-      env: SWFT=3.1
-    - osx_image: xcode9
-      env: SWIFT=3.2
-    - osx_image: xcode9
-      env: SWFT=4.0
-before_install:
-  - export UUID=$(instruments -s | ruby -e "ARGF.each_line{ |ln| ln =~ /iPhone SE .* \[(.*)\]/; if \$1; puts(\$1); exit; end }");
+    - {osx_image: xcode8.3, env: 'SWFT=3.1 DST="OS=10.3.1,name=iPhone SE"'}
+    - {osx_image: xcode9.2, env: 'SWFT=3.2 DST="OS=11.2,name=iPhone SE"'}
+    - {osx_image: xcode9.2, env: 'SWFT=4.0 DST="OS=11.2,name=iPhone SE"'}
+cache:
+  directories:
+  - Carthage
 install:
-  - carthage bootstrap --platform iOS
+  - carthage bootstrap --cache-builds --no-use-binaries --platform iOS
 script:
-  - set -o pipefail;
-    open -a "simulator" --args -CurrentDeviceUDID "$UUID";
-    xcodebuild -scheme PMKAVFoundation SWIFT_VERSION=$SWFT -destination "id=$UUID" -quiet clean build;
-    xcodebuild -scheme PMKAVFoundation -destination "id=$UUID" -quiet test
+  - set -o pipefail
+  - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" build SWIFT_VERSION=$SWFT
+  - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" test;
