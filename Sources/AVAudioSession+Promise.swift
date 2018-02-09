@@ -16,6 +16,6 @@ import PromiseKit
 */
 extension AVAudioSession {
     public func requestRecordPermission() -> Guarantee<Bool> {
-        return Guarantee(.pending, resolver: requestRecordPermission)
+        return Guarantee(resolver: requestRecordPermission)
     }
 }
