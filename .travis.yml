@@ -13,6 +13,7 @@ cache:
 before_install:
   - carthage bootstrap --cache-builds --no-use-binaries --platform iOS --verbose
 install:
-  - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" SWIFT_VERSION=$SWFT build-for-testing
+  - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" SWIFT_VERSION=$SWFT SWIFT_TREAT_WARNINGS_AS_ERRORS=YES build
+  - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" build -target PMKAVTests
 script:
   - xcodebuild -scheme PMKAVFoundation -quiet -destination "$DST" test
