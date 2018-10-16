@@ -21,9 +21,9 @@ jobs:
       script: |
         cd Carthage/Checkouts/PromiseKit
         mv .github/PromiseKit.podspec .
-        rm -rf Extensions/UIKit/Sources
-        cp -R ../../../Sources Extensions/UIKit
-        pod lib lint --subspec=PromiseKit/UIKit --fail-fast --swift-version=$SWIFT
+        rm -rf Extensions/AVFoundation/Sources
+        cp -R ../../../Sources Extensions/AVFoundation
+        pod lib lint --subspec=PromiseKit/AVFoundation --fail-fast --swift-version=$SWIFT
     - <<: *pod
       osx_image: xcode9.2
       env: SWIFT=3.2
